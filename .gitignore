@@ -15,7 +15,6 @@
 *.log
 tmp/**/*
 tmp/*
-Gemfile.lock
 doc/api
 doc/app
 *.swp
