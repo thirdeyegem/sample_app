@@ -23,8 +23,8 @@ group :assets do
 end
 
 group :test do
-  # gem 'capybara', '1.1.2' # I had issues using capybara with RSpec in the have_selector() tests.  I fixed it by using 'webrat' instead.
-  gem 'webrat'
+  gem 'capybara', '1.1.2' # I had issues using capybara with RSpec in the have_selector() tests.  I fixed it by using 'webrat' instead.
+  #gem 'webrat'
   gem 'factory_girl_rails', '1.4.0'
   gem 'cucumber-rails', '1.2.1', :require => false
   gem 'database_cleaner', '0.7.0'
