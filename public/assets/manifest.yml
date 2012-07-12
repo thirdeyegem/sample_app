@@ -19,5 +19,6 @@ blueprint/plugins/link-icons/icons/xls.png: blueprint/plugins/link-icons/icons/x
 blueprint/plugins/link-icons/readme.txt: blueprint/plugins/link-icons/readme-afb2a5f5fc6a022cebaaf52caa1040c6.txt
 blueprint/plugins/rtl/readme.txt: blueprint/plugins/rtl/readme-2c9a8e5745485f1607d6700d3377cd03.txt
 blueprint/src/grid.png: blueprint/src/grid-99a56fe9528f46c2bbb7084a7e34bb4f.png
+grid.png: grid-99a56fe9528f46c2bbb7084a7e34bb4f.png
 glyphicons-halflings-white.png: glyphicons-halflings-white-ef3d5b8d6a297804352b4a46fdb5466d.png
 glyphicons-halflings.png: glyphicons-halflings-0e7ff93d8f48fe1f5f762e4312e78da7.png
