@@ -85,6 +85,7 @@ GEM
     ffi (1.0.11)
     gherkin (2.11.1)
       json (>= 1.4.6)
+    gravatar_image_tag (1.1.3)
     growl (1.0.3)
     guard (1.2.1)
       listen (>= 0.4.2)
@@ -209,6 +210,7 @@ DEPENDENCIES
   database_cleaner (= 0.7.0)
   factory_girl_rails (= 1.4.0)
   faker (= 1.0.1)
+  gravatar_image_tag
   growl (= 1.0.3)
   guard-rspec (= 0.5.5)
   guard-spork (= 0.3.2)
