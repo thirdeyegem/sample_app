@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   end
     
   def new
+    @user  = User.new #initializes a raw User object
     @title = "Sign up"
   end
 end
