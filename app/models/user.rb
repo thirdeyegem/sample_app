@@ -37,8 +37,16 @@ class User < ActiveRecord::Base
   class << self
     def authenticate(email, submitted_password)
       user = find_by_email(email)
+      #the following two lines could be refactored using ternary operation;
+      #but is left as is to show a clearer/simpler example of what is taking place in the operation
       return nil if  user.nil?
       return user if user.has_password?(submitted_password)
+    end
+    
+    def authenticate_with_salt(id, cookie_salt)
+      user = find_by_id(id)
+      #using a ternary operation; return a user object or nil if salt test passes
+      (user && user.salt == cookie_salt) ? user : nil
     end
   end
   
