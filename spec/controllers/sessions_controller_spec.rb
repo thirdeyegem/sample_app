@@ -58,6 +58,16 @@ describe SessionsController do
         response.should redirect_to(user_path(@user))
       end
     end
+    
+    describe "DELETE 'destroy'" do
+      it "should sign a user out" do
+        #rspec_test_sign_in(Factory(:user))  #look in spec_helper.rb for method definition
+        controller.sign_in(Factory(:user))  #since intg_test_sign_in simply calls this method; why not just call it directly?
+        delete :destroy #no need to call an object because sessions don't have a model
+        controller.should_not be_signed_in
+        response.should redirect_to(root_path)
+      end
+    end
 
   end
 

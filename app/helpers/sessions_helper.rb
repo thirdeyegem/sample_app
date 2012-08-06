@@ -19,6 +19,11 @@ module SessionsHelper
     !current_user.nil? #returns true if user is signed in
   end
   
+  def sign_out
+    cookies.delete(:remember_token)
+    current_user = nil  #if one gets RSpec errors running this statement; try prefixing  this call with 'self.' 
+  end
+  
   
   private
   

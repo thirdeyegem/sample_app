@@ -20,5 +20,7 @@ class SessionsController < ApplicationController
   end
   
   def destroy
+    sign_out  #see sessions_helper.rb for method definition
+    redirect_to root_path
   end
 end
