@@ -10,8 +10,10 @@ class SessionsController < ApplicationController
      user = User.authenticate(params[:session][:email],params[:session][:password])
      if !user.nil? 
        sign_in user
-       redirect_to user, # same as 'redirect_to user_path(@user)'
-                   :flash => { :success => "Welcome back #{user.name}!" }
+       # redirect_to user, # same as 'redirect_to user_path(@user)'
+                   # :flash => { :success => "Welcome back #{user.name}!" }
+       redirect_back_or user #implemented friendly_forwarding 
+                      
      else
        @title = "Sign in"
        flash.now[:error] = "Invalid email/password combination."

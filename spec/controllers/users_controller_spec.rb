@@ -204,16 +204,36 @@ describe UsersController do
       @user = Factory(:user)
     end
     
-    it "should deny access to 'edit' if not signed in" do
-      get :edit, :id => @user
-      response.should redirect_to(signin_path)
-      flash[:notice].should =~ /sign in/i
+
+    describe "unauthenticated users" do
+      it "should deny access to 'edit' if not signed in" do
+        get :edit, :id => @user
+        response.should redirect_to(signin_path)
+        flash[:notice].should =~ /sign in/i
+      end
+    
+      it "should deny access to 'update' if not signed in" do
+        put :update, :id => @user, :user => {} #hash, even empty is needed to match the 'update' route action
+        response.should redirect_to(signin_path)
+        flash[:notice].should =~ /sign in/i
+      end
     end
     
-    it "should deny access to 'update' if not signed in" do
-      put :update, :id => @user, :user => {} #hash, even empty is needed to match the 'update' route action
-      response.should redirect_to(signin_path)
-      flash[:notice].should =~ /sign in/i
+    describe "authenticated users" do
+      before(:each) do
+        wrong_user = Factory(:user, :email => "user@example.net")
+        controller.sign_in(wrong_user)
+      end
+      
+      it "should prevent users from editing someone else's profile" do
+        get :edit, :id => @user
+        response.should redirect_to(root_path)
+      end
+      
+      it "should prevent users from updating someone else's profile" do
+        put :update, :id => @user, :user => {}
+        response.should redirect_to(root_path)
+      end
     end
   end
 

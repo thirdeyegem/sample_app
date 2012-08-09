@@ -23,10 +23,24 @@ module SessionsHelper
     cookies.delete(:remember_token)
     current_user = nil  #if one gets RSpec errors running this statement; try prefixing  this call with 'self.' 
   end
+  
+  def current_user?(user)
+    user == current_user
+  end
     
   def deny_access
+    store_requested_url
     redirect_to signin_path, :notice => "Sign in to proceed"  #:notice is the same as :flash => {:notice => ""}
   end  
+  
+  def store_requested_url
+    session[:return_to] = request.fullpath #create a session-lasting cookie to store the path the user is trying to access
+  end
+  
+  def redirect_back_or(default)
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil  #reset the return_to value in case there was one
+  end
   
   private
   
