@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+  before_filter :authenticate, :only => [:edit, :update]
 
   def show
     @user = User.find(params[:id])
@@ -49,4 +49,12 @@ class UsersController < ApplicationController
     # @user = User.find(params[:id])
     # @user.destroy
   end
+  
+  
+  private
+  
+    def authenticate
+      deny_access unless signed_in?  #see sessions_helper.rb for deny_access method
+    end
+
 end
