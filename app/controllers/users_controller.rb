@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :authenticate,    :only => [:index, :edit, :update]
+  before_filter :authenticate,    :only => [:index, :edit, :update, :destroy]
   before_filter :authorize_user,  :only => [:edit, :update]
+  before_filter :admin_user,      :only => :destroy
 
 
   def index
@@ -35,13 +36,13 @@ class UsersController < ApplicationController
   
   def edit
     @title = "Edit user"
-    @user = User.find(params[:id])
+    # @user = User.find(params[:id]) #assignment not needed since it was moved to the :authorize_user before_filter
   end
   
   def update
     #post to the User controller
     @title = "Edit user"
-    @user = User.find(params[:id])
+    # @user = User.find(params[:id]) #assignment not needed since it was moved to the :authorize_user before_filter
     if @user.update_attributes(params[:user])
        redirect_to @user, # same as 'redirect_to user_path(@user)'
                     :flash => { :success => "Profile updated!" }
@@ -54,6 +55,17 @@ class UsersController < ApplicationController
   def destroy
     # @user = User.find(params[:id])
     # @user.destroy
+    # redirect_to(root_path) unless current_user.admin?
+    
+    user_to_delete = User.find(params[:id])
+    
+    if current_user?(user_to_delete)
+      #prevent admin users from deleting themselves
+      redirect_to users_path, :flash => { :error => "As an admin user, you may not delete your own account."}
+    else
+      user_to_delete.destroy 
+      redirect_to users_path, :flash => { :success => "User has been deleted."}
+    end
   end
   
   
@@ -67,6 +79,10 @@ class UsersController < ApplicationController
       #for user-specific actions; allow - otherwise redirect to root_path
       @user = User.find(params[:id])
       redirect_to(root_path) unless current_user?(@user)
+    end
+    
+    def admin_user
+      redirect_to(root_path) unless current_user.admin?
     end
 
 end
