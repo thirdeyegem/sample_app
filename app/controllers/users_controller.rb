@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate,    :only => [:edit, :update]
+  before_filter :authenticate,    :only => [:index, :edit, :update]
   before_filter :authorize_user,  :only => [:edit, :update]
 
   def show
@@ -44,6 +44,9 @@ class UsersController < ApplicationController
   
   def index
     #show all users
+    @title = "All users"
+    @all_users = User.all
+    
   end
   
   def destroy
