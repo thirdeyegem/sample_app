@@ -1,10 +1,13 @@
 <h1>All users</h1>
 
+<!--see 'index_unextrapolated.html.erb' for way of presenting index without partials-->
+
+<!-- will_paginate has no need to specify @users array variable (e.g. will_paginate @users). Rails infers it from the name of the current model-->
+<%= will_paginate %>
+
 <ul class="users">
-	<% @all_users.each do |user| %>
-	<li>
-		<%= gravatar_for user, :size => 30 %>
-		<%= link_to user.name, user %>
-	</li>
-	<% end %>
+	<!-- the following line automatically calls the '.each' method for the '@users' array variable and also infers the presence of a '_user.html.erb' partial, both based on the '@users' variable being passed to the 'render' method-->
+	<%= render @users %>
 </ul>
+
+<%= will_paginate %>

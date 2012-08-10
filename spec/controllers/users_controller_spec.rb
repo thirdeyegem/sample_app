@@ -21,6 +21,12 @@ describe UsersController do
         @user = controller.sign_in(Factory(:user)) #user for signin process
         Factory(:user, :email => "user@example.net") #additional user for testing index page
         Factory(:user, :email => "user@example.com") #additional user for testing index page
+        
+        #will_paginate user testing (create enough users to paginate through)
+        #see factories.erb for sequence spec
+        30.times do
+          Factory(:user, :email => Factory.next(:email))
+        end
       end
       
       it "should be successful" do
@@ -35,9 +41,16 @@ describe UsersController do
       
       it "should have an element for each user" do
         get :index
-        User.all.each do |user|
+        # User.all.each do |user| #def for test without using pagination
+        User.paginate(:page => 1).each do |user| #def for test using pagination
           response.should have_selector('li', :content => user.name)
         end
+      end
+      
+      it "should paginate users" do
+        get :index
+        response.should have_selector('div.pagination')
+        #response.should have_selector('a', :href => "/users?page=2", :content => "2") #testing for pagination link
       end
       
     end

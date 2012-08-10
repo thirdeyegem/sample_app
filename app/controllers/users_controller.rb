@@ -2,6 +2,14 @@ class UsersController < ApplicationController
   before_filter :authenticate,    :only => [:index, :edit, :update]
   before_filter :authorize_user,  :only => [:edit, :update]
 
+
+  def index
+    #show all users
+    @title = "All users"
+    # @all_users = User.all #without WillPaginate functionality
+    @users = User.paginate(:page => params[:page]) #with WillPaginate functionality
+  end
+  
   def show
     @user = User.find(params[:id])
     @title = @user.name
@@ -42,12 +50,6 @@ class UsersController < ApplicationController
     end
   end
   
-  def index
-    #show all users
-    @title = "All users"
-    @all_users = User.all
-    
-  end
   
   def destroy
     # @user = User.find(params[:id])
