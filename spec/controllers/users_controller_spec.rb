@@ -107,6 +107,33 @@ describe UsersController do
       response.should have_selector('td>a', :content => user_path(@user),
                                             :href => user_path(@user))
     end
+    
+    it "should show the user's microposts" do
+      mp1 = Factory(:micropost, :user => @user, :content => "lorem ipsum")
+      mp2 = Factory(:micropost, :user => @user, :content => "dolor sit amet")
+      get :show, :id => @user
+      response.should have_selector('span.content', :content => mp1.content)
+      response.should have_selector('span.content', :content => mp2.content)
+    end
+    
+    it "should not paginate microposts if user has less than 30 microposts" do
+      20.times { Factory(:micropost, :user => @user, :content => "lorem ipsum") }
+      get :show, :id => @user
+      response.should_not have_selector('div.pagination')
+    end
+    
+    it "should paginate microposts if user has more than 30 microposts" do
+      35.times { Factory(:micropost, :user => @user, :content => "lorem ipsum") }
+      get :show, :id => @user
+      response.should have_selector('div.pagination')
+    end
+    
+    it "should display the user micropost count" do
+      10.times { Factory(:micropost, :user => @user, :content => "lorem ipsum") }
+      get :show, :id => @user
+      response.should have_selector('td.sidebar', 
+                                    :content => @user.microposts.count.to_s)
+    end
   end
   
   describe "GET 'new'" do
