@@ -70,10 +70,6 @@ class UsersController < ApplicationController
   
   
   private
-  
-    def authenticate
-      deny_access unless signed_in?  #see sessions_helper.rb for deny_access method
-    end
     
     def authorize_user
       #for user-specific actions; allow - otherwise redirect to root_path
