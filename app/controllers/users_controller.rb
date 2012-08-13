@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_filter :authenticate,    :only => [:index, :edit, :update, :destroy]
   before_filter :authorize_user,  :only => [:edit, :update]
-  before_filter :admin_user,      :only => :destroy
+  before_filter :admin_user_only,      :only => :destroy
 
 
   def index
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
       redirect_to(root_path) unless current_user?(@user)
     end
     
-    def admin_user
+    def admin_user_only
       redirect_to(root_path) unless current_user.admin?
     end
 

@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
   attr_accessor   :password #creates getter and setter methods
   attr_accessible :name, :email, :password, :password_confirmation
   
+  has_many :microposts, :dependent => :destroy #cascade delete microposts if user is deleted
+  
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
   validates :name,      :presence => true,
