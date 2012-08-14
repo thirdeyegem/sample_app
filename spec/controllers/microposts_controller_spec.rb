@@ -33,10 +33,13 @@ describe MicropostsController do
         end.should_not change(Micropost, :count)
       end
       
-      it "should re-render the home page" do
+      it "should re-render the home page with an error message" do
         post :create, :micropost => @attr
         response.should render_template('pages/home')
+        response.should have_selector('div#error_explanation', 
+                                      :content => "There were problems")
       end
+
     end
     
     describe "success" do
@@ -61,6 +64,41 @@ describe MicropostsController do
       end
     end
     
+  end
+  
+  
+  describe "DELETE 'destroy'" do
+    
+    describe "unauthorized user" do
+      
+      before(:each) do
+        @user = Factory(:user)
+        wrong_user = Factory(:user, :email => Factory.next(:email))
+        @micropost = Factory(:micropost, :user => @user)
+        controller.sign_in(wrong_user)
+      end
+      
+      it "should deny access" do
+        delete :destroy, :id => @micropost
+        response.should redirect_to(root_path)
+      end
+    end
+    
+    describe "authorized user" do
+      
+      before(:each) do
+        @user = controller.sign_in(Factory(:user))
+        @micropost = Factory(:micropost, :user => @user)        
+      end
+      
+      it "should destroy the micropost" do
+        lambda do
+          delete :destroy, :id => @micropost
+          flash[:success].should =~ /deleted/i
+          response.should redirect_to(root_path)
+        end.should change(Micropost, :count).by(-1)
+      end
+    end
   end
   
 end
