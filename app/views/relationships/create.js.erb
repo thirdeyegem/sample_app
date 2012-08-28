@@ -1,0 +1,6 @@
+/* you can use Prototype or JQuery */
+
+/*using prototype DOM syntax, update the follow button state,
+as well as the 'followers' count on the side bar */
+$("follow_form").update("<%= escape_javascript(render('users/unfollow')) %>")
+$("followers").update('<%= "#{(pluralize(@user.followers.count, "follower"))} %>')
