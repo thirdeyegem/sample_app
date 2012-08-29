@@ -49,7 +49,11 @@ class User < ActiveRecord::Base
   end
   
   def feed
-    Micropost.where("user_id = ?", id) #'?' ensures the escaping of strings so that SQL commands won't be subject to SQL Injection.  Also, the parameter 'id' is same as 'self.id'
+    #following is the code line for showing the feed only for the current user
+    # Micropost.where("user_id = ?", id) #'?' ensures the escaping of strings so that SQL commands won't be subject to SQL Injection.  Also, the parameter 'id' is same as 'self.id'
+    
+    #following is the code line for showing the feed for the current user, plus the current user's followed list
+    Micropost.from_users_followed_by(self)
   end
   
   def following?(followed)
